@@ -70,6 +70,12 @@ gap: 16px;
 margin-bottom: 10px;    
 }
 
+.printcontent{
+    display: flex;
+    flex-direction: column;
+
+}
+
 .printTitle{
 color: #F0E3CA;
 font-family: Roboto;
@@ -127,6 +133,11 @@ position: relative;
 {
     display: flex;
     justify-content: flex-end;
+}
+.btn__img{
+    border:none;
+    border-radius: none;
+    background-color: #1B1A17;
 }
 
 
