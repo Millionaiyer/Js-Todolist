@@ -1,18 +1,23 @@
 const container = document.getElementById('container');
-const title = document.getElementById('title');
-const about = document.getElementById('about');
+const section = document.createElement('section')
+section.id = 'section';
+container.append(section)
+let count = 0;
+let title = document.getElementById('title');
+let about = document.getElementById('about');
 // error
-const errTitle = document.querySelector('#errTitle');
-const errAbout = document.querySelector('#errAbout');
-// let printDiv = '';
-// let divFlag = 0;
-let arrTitle = [];
-
-function createDiv (titleValue,aboutValue) {
+const errTitle = document.getElementById('errTitle');
+const errAbout = document.getElementById('errAbout');
+// created array 
+let arr = [];
+function createDiv () {
     // Creat Div
+// console.log(arr)
+    arr.map((res) =>{
+        console.log(res)
     const printDiv = document.createElement('div');
     // printDiv.id += `printContent ${divFlag++}`;
-    printDiv.id += 'printContent';
+    printDiv.id += `printContent`;
     printDiv.className = 'print'
     // printDiv.innerHTML=printDiv.id
     section.append(printDiv);
@@ -26,15 +31,14 @@ function createDiv (titleValue,aboutValue) {
     const printTitle = document.createElement('p');
     printTitle.id = 'printTitle';
     printTitle.className = 'printTitle';
-    console.log(arrTitle)
-    printTitle.innerText = titleValue ;
+    printTitle.innerText = res.title ;
     printContent.append(printTitle);
 
     // Create About
     const printAbout = document.createElement('p');
     printAbout.id = 'printAbout';
     printAbout.className = 'printAbout';
-    printAbout.innerHTML = aboutValue;
+    printAbout.innerHTML = res.about;
     printContent.append(printAbout);
 
     //img Div
@@ -47,64 +51,70 @@ function createDiv (titleValue,aboutValue) {
     const btn__img = document.createElement('button');
     btn__img.id = 'btn__img';
     btn__img.className = 'btn';
+    // btn__img.value = ind
     printImg.append(btn__img);
-    btn__img. addEventListener ('click', () => {
-        for(i=0;i<=arrTitle.length;i++){            
-            printDiv.style.display = 'none';
-            arrTitle.splice(i-1,i);
-        }
-        console.log(arrTitle);
-        // document.getElementById('printContent').innerHTML = arrTitle;
+    // let check = false;
+    btn__img.addEventListener ('click', (e) => {
+        // console.log(ind,'hello')
+        // for(let i=0;i<arr.length;i++){    
+            // let index = arr.indexOf(arr[i])
+            // console.log(index)
+            // document.getElementById(`printContent${ind}`).remove();
+            const index = arr.indexOf(res);
+            if (index > -1) { // only splice array when item is found
+                section.removeChild(section.children[index])
+                arr.splice(index, 1); // 2nd parameter means remove one item only
+              }
+            // arr.splice(ind, 1);
+        // section.removeChild(section.children[ind])
+            // // arr = bn;
+            // // count--;  
+            // console.log(res.id,"id")
+            // printDiv.style.display = 'none';
+        // }
+        console.log(arr,"arr")
     })
+    // createDiv(arr);
     img.id = '';
     img.className = 'delete__img';
     img.src = './asset/delete.svg'
     btn__img.append(img);
+})
 }
 
 
-const section = document.createElement('section')
-container.append(section)
 btn.addEventListener('click', () => {    
-    // error()
+    let flag = false;
+     title = document.getElementById('title')
+     about = document.getElementById('about')  
+     console.log(title.value)
     
-    const title = document.getElementById('title')
-    const about = document.getElementById('about')  
-    
-    if(title.value == '' || title.value == null && about.value == '' || about.value == null ){
-        errTitle.style.display = 'block'
-        errAbout.style.display = 'block' 
-
-    }else{
-        errTitle.style.display = 'none'
-        errAbout.style.display = 'none'
-        arrTitle.push({title:title.value,about:about.value})
-    } 
-    // createDiv();
+    // if(title.value == '' || title.value == null){
+    //     errTitle.style.display = 'block' 
+    //     flag = true;
+    // }  
+    // if(about.value == '' || about.value == null) {
+    //     errAbout.style.display = 'block' 
+    //     flag = true;
+    // }
+    //  if(title.value !== '' && about.value !== '' )
+    // {
+    //     errTitle.style.display = 'none'
+    //     errAbout.style.display = 'none'        
+    //     flag = false;
+        arr.push({title:title.value,about:about.value,id:count})
+        
+        count ++;
+    //     console.log(count,'add')
+    // }   
     
     title.value = ''
     about.value = ''
-
-    
-
-
-//    const lists = arrTitle.map(el=>`<p class='name'>${el}</p>`)
-//     section.innerHTML = lists
-    
-
 section.innerHTML = '';
-arrTitle.forEach(e=>createDiv(e.title,e.about))
+console.log('before',arr)
+createDiv(arr)
+// arr.forEach(e=>createDiv(e.title,e.about,e.id))
+console.log(arr)
+// return false;
 
-    
-    // for (let i=0;i<arrTitle.length;i++)
-    // {
-    //    createDiv(arrTitle[i])
-    // }
 })
-
-
-// const arr = ['data', 'data', 'dyaa']
-
-// container.createTextNode(arr.map(el=>{
-//     return `<p>${el}</p>`    
-// }))
