@@ -1,120 +1,203 @@
-const container = document.getElementById('container');
-const section = document.createElement('section')
-section.id = 'section';
-container.append(section)
-let count = 0;
-let title = document.getElementById('title');
-let about = document.getElementById('about');
-// error
-const errTitle = document.getElementById('errTitle');
-const errAbout = document.getElementById('errAbout');
-// created array 
+//created Container
+const container = document.getElementById("container");
+
+//created section
+const section = document.createElement("section");
+
+// given attributes to section
+section.id = "section";
+container.append(section);
+
+// created a check for edit button when pressed
+let editCheck = 0;
+
+// selecting title and about (input tags)
+let title = document.getElementById("title");
+let about = document.getElementById("about");
+
+// selected error / validation handling tags
+const errTitle = document.getElementById("errTitle");
+const errAbout = document.getElementById("errAbout");
+
+// created edit button when add button is replaced
+let exclamation = document.querySelector(".btn-edit");
+
+// add button
+let add__btn = document.getElementById("btn");
+// edit button initialized
+let edit = "";
+
+// created array to store values of input tag
 let arr = [];
-function createDiv () {
-    // Creat Div
-// console.log(arr)
-    arr.map((res) =>{
-        console.log(res)
-    const printDiv = document.createElement('div');
-    // printDiv.id += `printContent ${divFlag++}`;
-    printDiv.id += `printContent`;
-    printDiv.className = 'print'
-    // printDiv.innerHTML=printDiv.id
-    section.append(printDiv);
-    
-    const printContent = document.createElement('div');
-    printContent.id = 'printcontent';
-    printContent.className = 'printcontent';
+
+function createDiv() {
+  // Creat Div
+  // loops through all the values in an array using Map
+  arr.map((res, id) => {
+    // Wrapper Div and it's attributes to wrap delete button and input texts that are displayed
+    const wrapper = document.createElement("div");
+    wrapper.id = "wrapper";
+    section.append(wrapper);
+    wrapper.addEventListener("click", () => {
+      // EDIT BUTTON creation
+      if (editCheck == 0) {
+        // check logic to create edit button
+
+        //created div for edit button and it's attributes
+        const editDiv = document.createElement("div");
+        editDiv.className = "edit";
+        wrapper.append(editDiv);
+
+        //edit button and its atrributes
+        edit = document.createElement("button");
+        edit.className = "btn btn__edit";
+        editDiv.append(edit);
+        edit.addEventListener("click", () => {
+          add__btn.style.display = "none";
+          exclamation.style.display = "block";
+
+          title.value = `${res.title} `;
+          about.value = `${res.about}`;
+        });
+        // edit image and it's attributes
+        const edit__img = document.createElement("img");
+        edit__img.src = "./asset/edit.svg";
+        edit__img.className = "edit__img";
+        edit.append(edit__img);
+        editCheck++;
+        console.log(editCheck);
+      } else {
+        // else delete edit button if check != 0
+        edit.remove();
+        editCheck--;
+        console.log(editCheck);
+      }
+    });
+    // wrapper div for input and button
+    const printDiv = document.createElement("div");
+    printDiv.id += `printDiv${id}`;
+    printDiv.className = "print";
+    wrapper.append(printDiv);
+
+    // div and it's attributes for input tags
+    const printContent = document.createElement("div");
+    printContent.id = "printcontent";
+    printContent.className = "printcontent";
     printDiv.append(printContent);
 
-    // Create Title
-    const printTitle = document.createElement('p');
-    printTitle.id = 'printTitle';
-    printTitle.className = 'printTitle';
-    printTitle.innerText = res.title ;
+    // Create Title input tag and it's attributes
+    const printTitle = document.createElement("p");
+    printTitle.id = "printTitle";
+    printTitle.className = "printTitle";
+    printTitle.innerText = res.title;
     printContent.append(printTitle);
 
-    // Create About
-    const printAbout = document.createElement('p');
-    printAbout.id = 'printAbout';
-    printAbout.className = 'printAbout';
+    // Create About input tag and it's attributes
+    const printAbout = document.createElement("p");
+    printAbout.id = "printAbout";
+    printAbout.className = "printAbout";
     printAbout.innerHTML = res.about;
     printContent.append(printAbout);
 
-    //img Div
-    const printImg = document.createElement('div');
-    printImg.id = 'printImg';
-    printDiv.append(printImg);
+    //Delete img Div and it's attributes
+    const deleteImg = document.createElement("div");
+    deleteImg.id = "deleteImg";
+    printDiv.append(deleteImg);
 
     // Create Delete Button
-    const img = document.createElement('img');
-    const btn__img = document.createElement('button');
-    btn__img.id = 'btn__img';
-    btn__img.className = 'btn';
-    // btn__img.value = ind
-    printImg.append(btn__img);
-    // let check = false;
-    btn__img.addEventListener ('click', (e) => {
-        // console.log(ind,'hello')
-        // for(let i=0;i<arr.length;i++){    
-            // let index = arr.indexOf(arr[i])
-            // console.log(index)
-            // document.getElementById(`printContent${ind}`).remove();
-            const index = arr.indexOf(res);
-            if (index > -1) { // only splice array when item is found
-                section.removeChild(section.children[index])
-                arr.splice(index, 1); // 2nd parameter means remove one item only
-              }
-            // arr.splice(ind, 1);
-        // section.removeChild(section.children[ind])
-            // // arr = bn;
-            // // count--;  
-            // console.log(res.id,"id")
-            // printDiv.style.display = 'none';
-        // }
-        console.log(arr,"arr")
-    })
-    // createDiv(arr);
-    img.id = '';
-    img.className = 'delete__img';
-    img.src = './asset/delete.svg'
+    const img = document.createElement("img");
+    const btn__img = document.createElement("button");
+    btn__img.id = "btn__img";
+    btn__img.className = "btn";
+    deleteImg.append(btn__img);
+    // delete button event listner
+    btn__img.addEventListener("click", () => {
+      popup.style.display = "flex"; // display flex on click button which brings the popup box
+    });
+
+    img.id = "";
+    img.className = "delete__img";
+    img.src = "./asset/delete.svg";
     btn__img.append(img);
-})
+
+    // DELETE POP UP
+    // MAIN POPUP
+    let popup = document.createElement("div");
+    popup.id = "popup";
+    container.append(popup);
+
+    // WRAPPER DIV
+    const popupDiv = document.createElement("div");
+    popupDiv.id = "popupDiv";
+    popup.append(popupDiv);
+
+    // WRAPS Paragraph tag
+    const paraDiv = document.createElement("div");
+    paraDiv.id = "paraDiv";
+    popupDiv.append(paraDiv);
+
+    // paragraph tag
+    const deletePara = document.createElement("p");
+    deletePara.innerHTML = "Delete This Task?";
+    deletePara.id = "deletePara";
+    paraDiv.append(deletePara);
+
+    // wrapper for button tags
+    const deleteDiv = document.createElement("div");
+    deleteDiv.id = "deleteDiv";
+    popupDiv.append(deleteDiv);
+
+    // delete button
+    const okDelete = document.createElement("button");
+    okDelete.id = "okDelete";
+    okDelete.innerHTML = "Yes";
+    deleteDiv.append(okDelete);
+    // delete functionality on Yes button
+    okDelete.addEventListener("click", () => {
+      const index = arr.indexOf(res); // checks for the index value on the
+      if (index > -1) {
+        // only splice array when item is found
+        section.removeChild(section.children[index]); // removes the child element of the parent section
+        arr.splice(index, 1); // updates the current array and deletes the value at index for 1 unit.
+      }
+      popup.style.display = "none";
+    });
+
+    // No button click
+    const dontDelete = document.createElement("button");
+    dontDelete.id = "dontDelete";
+    dontDelete.innerHTML = "No";
+    deleteDiv.append(dontDelete);
+    dontDelete.addEventListener("click", () => {
+      popup.style.display = "none";
+    });
+  });
 }
 
+// Validation
+btn.addEventListener("click", () => {
+  let flag = false; // create a flag at false
 
-btn.addEventListener('click', () => {    
-    let flag = false;
-     title = document.getElementById('title')
-     about = document.getElementById('about')  
-     console.log(title.value)
-    
-    // if(title.value == '' || title.value == null){
-    //     errTitle.style.display = 'block' 
-    //     flag = true;
-    // }  
-    // if(about.value == '' || about.value == null) {
-    //     errAbout.style.display = 'block' 
-    //     flag = true;
-    // }
-    //  if(title.value !== '' && about.value !== '' )
-    // {
-    //     errTitle.style.display = 'none'
-    //     errAbout.style.display = 'none'        
-    //     flag = false;
-        arr.push({title:title.value,about:about.value,id:count})
-        
-        count ++;
-    //     console.log(count,'add')
-    // }   
-    
-    title.value = ''
-    about.value = ''
-section.innerHTML = '';
-console.log('before',arr)
-createDiv(arr)
-// arr.forEach(e=>createDiv(e.title,e.about,e.id))
-console.log(arr)
-// return false;
+  // Validation logic
+  if (title.value == "" || title.value == null) {
+    errTitle.style.display = "block";
+    flag = true;
+  }
+  if (about.value == "" || about.value == null) {
+    errAbout.style.display = "block";
+    flag = true;
+  }
+  if (title.value !== "" && about.value !== "") {
+    errTitle.style.display = "none";
+    errAbout.style.display = "none";
+    flag = false;
+    arr.push({ title: title.value, about: about.value });
+  }
 
-})
+  // reset input tag values
+  title.value = "";
+  about.value = "";
+  section.innerHTML = ""; // reset section from the dom
+  createDiv(arr);
+  // arr.forEach(e=>createDiv(e.title,e.about,e.id))
+});
