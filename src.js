@@ -28,7 +28,7 @@ let add__btn = document.getElementById("btn");
 let edit = "";
 
 // create an id for array
-let id = 0;
+let count = 0;
 // created array to store values of input tag
 let arr = [];
 let arrEdit = [];
@@ -206,10 +206,13 @@ function createDiv() {
         // only splice array when item is found
         section.removeChild(section.children[index]); // removes the child element of the parent section
         arr.splice(index, 1); // updates the current array and deletes the value at index for 1 unit.
-        id--;
+        console.log(count,'count')
+        console.log(arr,'arr check value')
       }
+      console.log(count,'how much is the count')
       
       popup.style.display = "none";
+      count --;
     });
 
     // No button click
@@ -255,9 +258,9 @@ btn.addEventListener("click", () => {
     errTitle.style.display = "none";
     errAbout.style.display = "none";
     flag = false;
-    arr.push({ title: title.value, about: about.value, id:id });
-    id++;
+    arr.push({ title: title.value, about: about.value, id:count });
   }
+  count++;
 
   // reset input tag values
   title.value = "";
