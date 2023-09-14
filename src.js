@@ -20,15 +20,18 @@ const errTitle = document.getElementById("errTitle");
 const errAbout = document.getElementById("errAbout");
 
 // created edit button when add button is replaced
-let exclamation = document.querySelector(".btn-edit");
+// let exclamation = document.querySelector(".btn-edit");
 
 // add button
 let add__btn = document.getElementById("btn");
 // edit button initialized
 let edit = "";
 
+// create an id for array
+let id = 0;
 // created array to store values of input tag
 let arr = [];
+let arrEdit = [];
 
 function createDiv() {
   // Creat Div
@@ -53,12 +56,53 @@ function createDiv() {
         edit.className = "btn btn__edit";
         editDiv.append(edit);
         edit.addEventListener("click", () => {
-          add__btn.style.display = "none";
-          exclamation.style.display = "block";
+          
+    //EDIT POP UP
+  const editPopup = document.createElement('div');
+  editPopup.id = 'editPopup';
+  container.append(editPopup);
 
-          title.value = `${res.title} `;
-          about.value = `${res.about}`;
+  const editPopupWrapper = document.createElement('div');
+  editPopupWrapper.id = 'editPopupWrapper';
+  editPopup.append(editPopupWrapper);
+
+  const editTitle = document.createElement('input');
+  editTitle.id = 'editTitle';
+  editPopupWrapper.append(editTitle);
+
+  const editAbout = document.createElement('textarea');
+  editAbout.id = 'editAbout';
+  editPopupWrapper.append(editAbout);
+
+  const editBtnDiv = document.createElement('div');
+  editBtnDiv.id = 'editBtnDiv';
+  editPopupWrapper.append(editBtnDiv);
+
+  const editCancelBtn = document.createElement('button');
+  editCancelBtn.id = 'editCancelBtn';
+  editCancelBtn.className = 'btn editCancelBtn'
+  editCancelBtn.innerHTML = 'Cancel';
+  editBtnDiv.append(editCancelBtn);
+  editBtnDiv.addEventListener('click',() => {
+    editPopup.style.display = 'none';
+  })
+
+
+  const editSaveBtn = document.createElement('button');
+  editSaveBtn.id = 'editSaveBtn';
+  editSaveBtn.className = 'btn editSaveBtn'
+  editSaveBtn.innerHTML = 'Save'  
+  editBtnDiv.append(editSaveBtn);
+  editSaveBtn.addEventListener('click',() =>{
+    printTitle.innerHTML = editTitle.value;
+    printAbout.innerHTML = editAbout.value;
+    console.log('hello world')
+    console.log(arr);
+  })
+
         });
+
+        
         // edit image and it's attributes
         const edit__img = document.createElement("img");
         edit__img.src = "./asset/edit.svg";
@@ -119,6 +163,8 @@ function createDiv() {
     img.className = "delete__img";
     img.src = "./asset/delete.svg";
     btn__img.append(img);
+  
+  
 
     // DELETE POP UP
     // MAIN POPUP
@@ -146,6 +192,7 @@ function createDiv() {
     const deleteDiv = document.createElement("div");
     deleteDiv.id = "deleteDiv";
     popupDiv.append(deleteDiv);
+    
 
     // delete button
     const okDelete = document.createElement("button");
@@ -159,7 +206,9 @@ function createDiv() {
         // only splice array when item is found
         section.removeChild(section.children[index]); // removes the child element of the parent section
         arr.splice(index, 1); // updates the current array and deletes the value at index for 1 unit.
+        id--;
       }
+      
       popup.style.display = "none";
     });
 
@@ -171,8 +220,23 @@ function createDiv() {
     dontDelete.addEventListener("click", () => {
       popup.style.display = "none";
     });
+
+    // exclamation.addEventListener('click', () => {
+    //   let index = arr.indexOf(res)
+    //   if(index > -1)
+    //   {     
+    //     printTitle.innerHTML = title.value;
+    //     // printAbout.innerHTML = res.about;
+    //     console.log(index,'index')
+    //     add__btn.style.display = "block";
+    //     exclamation.style.display = 'none';
+    //     title.innerHTML = '';
+    //   }
+    // })
   });
+
 }
+
 
 // Validation
 btn.addEventListener("click", () => {
@@ -191,7 +255,8 @@ btn.addEventListener("click", () => {
     errTitle.style.display = "none";
     errAbout.style.display = "none";
     flag = false;
-    arr.push({ title: title.value, about: about.value });
+    arr.push({ title: title.value, about: about.value, id:id });
+    id++;
   }
 
   // reset input tag values
@@ -199,5 +264,6 @@ btn.addEventListener("click", () => {
   about.value = "";
   section.innerHTML = ""; // reset section from the dom
   createDiv(arr);
+  console.log(arr,'check id')
   // arr.forEach(e=>createDiv(e.title,e.about,e.id))
 });
