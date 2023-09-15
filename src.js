@@ -38,8 +38,11 @@ function createDiv() {
   // loops through all the values in an array using Map
   arr.map((res, id) => {
     // Wrapper Div and it's attributes to wrap delete button and input texts that are displayed
+    if(edit.length>0){
+console.log("edit")
+    }
     const wrapper = document.createElement("div");
-    wrapper.id = "wrapper";
+    wrapper.id = `wrapper${id}`;
     section.append(wrapper);
     wrapper.addEventListener("click", () => {
       // EDIT BUTTON creation
@@ -66,12 +69,15 @@ function createDiv() {
   editPopupWrapper.id = 'editPopupWrapper';
   editPopup.append(editPopupWrapper);
 
+  //title edit input
   const editTitle = document.createElement('input');
   editTitle.id = 'editTitle';
+  editTitle.value = arr[id]?.title
   editPopupWrapper.append(editTitle);
 
   const editAbout = document.createElement('textarea');
   editAbout.id = 'editAbout';
+  editAbout.innerText = arr[id]?.about
   editPopupWrapper.append(editAbout);
 
   const editBtnDiv = document.createElement('div');
@@ -87,20 +93,40 @@ function createDiv() {
     editPopup.style.display = 'none';
   })
 
-
+  //EDIT FUNCTIONALITY
   const editSaveBtn = document.createElement('button');
   editSaveBtn.id = 'editSaveBtn';
   editSaveBtn.className = 'btn editSaveBtn'
   editSaveBtn.innerHTML = 'Save'  
   editBtnDiv.append(editSaveBtn);
-  editSaveBtn.addEventListener('click',() =>{
-    printTitle.innerHTML = editTitle.value;
-    printAbout.innerHTML = editAbout.value;
-    console.log('hello world')
-    console.log(arr);
-  })
+  editSaveBtn.addEventListener('click',() =>{    
+      
+      arrEdit.push({title:editTitle.value,about:editAbout.value,count:id})
+      // console.log(arrEdit,'EDITED ARR');
+       arr = arr.map((e) => {
+       if(e.count === id) {
+        return arrEdit[0]
+       }
+       return e
+      })
 
-        });
+      // arr[id] = {
+      //   title:editTitle.value,
+      //   about:editAbout.value,
+      //   count:id
+      // }
+     
+
+
+        printTitle.innerHTML = editTitle.value;
+        printAbout.innerHTML = editAbout.value;
+        // arrEdit.pop()
+        
+      // }
+      console.log(arr,'first Array');
+      console.log(arrEdit,'second array');
+  })
+   });
 
         
         // edit image and it's attributes
@@ -206,11 +232,8 @@ function createDiv() {
         // only splice array when item is found
         section.removeChild(section.children[index]); // removes the child element of the parent section
         arr.splice(index, 1); // updates the current array and deletes the value at index for 1 unit.
-        console.log(count,'count')
-        console.log(arr,'arr check value')
       }
-      console.log(count,'how much is the count')
-      
+      console.log(arr,'delete');
       popup.style.display = "none";
       count --;
     });
@@ -258,7 +281,7 @@ btn.addEventListener("click", () => {
     errTitle.style.display = "none";
     errAbout.style.display = "none";
     flag = false;
-    arr.push({ title: title.value, about: about.value, id:count });
+    arr.push({ title: title.value, about: about.value,count:count});
   }
   count++;
 
